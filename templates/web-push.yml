@@ -22,7 +22,7 @@ spec:
       default: '${CI_PROJECT_NAME}: ${MSG_STATE} (ref ${CI_COMMIT_REF_NAME})'
       description: 'The message that should be sent using this ntfy component.'
     msg_click:
-    msg_email:
+    # msg_email:
     msg_markdown:
       default: false
       description: 'If this value is set to true, the message body will be processed as markdown formatted text.'
