@@ -8,10 +8,8 @@ spec:
     stage:
       default: ntfy
       description: 'The name of the stage this components job will belong to..'
-    ntfy_user:
-      description: 'The *username* that will be used to authenticate to ntfy and send a web-push notification'
-    ntfy_pass:
-      description: 'The *password* that will be used to authenticate to ntfy and send a web-push notification.'
+    ntfy_token:
+      description: 'The *access token* that will be used to authenticate to ntfy and send a web-push notification'
     ntfy_url:
       default: 'https://ntfy.pcfae.com/ad_arbitorium-gitops'
       description: 'The ntfy URL (containing the topic) that the web-push notification will be sent to. i.e. https://ntfy.sh/gitlab'
@@ -44,8 +42,7 @@ spec:
     name: alpine:latest
     entrypoint: [""]
   variables:
-    NTFY_USER: "$[[ inputs.ntfy_user ]]"
-    NTFY_PASS: "$[[ inputs.ntfy_pass ]]"
+    NTFY_TOKEN: "$[[ inputs.ntfy_token ]]"
     NTFY_URL: "$[[ inputs.ntfy_url ]]"
     MSG_ACTION: "$[[ inputs.msg_action ]]"
     MSG_ATTACH: "$[[ inputs.msg_attach ]]"
@@ -74,7 +71,7 @@ spec:
       -H "Priority: ${MSG_PRIORITY}" \
       -H "Tags: ${MSG_TAGS}" \
       -H "Title: ${MSG_TITLE}" \
-      -u "${NOTIFY_USER}:${NOTIFY_PASS}" \
+      -H "Authorization: Bearer ${NTFY_TOKEN}" \
       "${NTFY_URL}"
       # -H "Email: "$MSG_EMAIL"
     echo "---------------------------------------------------------------------------"
