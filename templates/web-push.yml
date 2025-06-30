@@ -1,4 +1,6 @@
-# This script was possible via ntfy documentation and also study of: https://sleeplessbeastie.eu/2024/03/18/how-to-utilize-ntfy-notifications-from-gitlab-pipelines/
+# This script was possible via ntfy documentation 
+# and also study of: https://sleeplessbeastie.eu/2024/03/18/how-to-utilize-ntfy-notifications-from-gitlab-pipelines/
+# Also the base component structure can be credited to https://sleeplessbeastie.eu/2024/03/18/how-to-utilize-ntfy-notifications-from-gitlab-pipelines/
 ---
 spec:
   inputs:
