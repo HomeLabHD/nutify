@@ -14,23 +14,28 @@ spec:
       default: 'https://ntfy.pcfae.com/ad_arbitorium-gitops'
       description: 'The ntfy URL (containing the topic) that the web-push notification will be sent to. i.e. https://ntfy.sh/gitlab'
     msg_action:
+    default ''
       description: 'Defines a scripted action that a user can take upon recieving the web-push notification.'
     msg_attach:
+      default: ''
       description: 'The url of an image or other file to be attached to the ntfy web-push notification.'
     msg_body:
       default: '${CI_PROJECT_NAME}: ${MSG_STATE} (ref ${CI_COMMIT_REF_NAME})'
       description: 'The message that should be sent using this ntfy component.'
     msg_click:
+      default: ''
       description: 'A url that should be opened when the user clicks on the message.'
     msg_markdown:
       default: false
       description: 'If this value is set to true, the message body will be processed as markdown formatted text.'
     msg_priority:
-      default: 'prio:low'
+      default: 'low'
       description: 'The priority level of the notification that will be sent.'
     msg_tags:
+      default: 'bell'
       description: ' Comma seperated list of Tags/Emoji that the message should be marked with. (i.e. tags:scream_cat,smiley_cat)'
     msg_title: 
+      default: Gitlab ntfy Component
       description: 'The Title that the ntfy web-push message will be sent with.'
     # msg_email:
 
