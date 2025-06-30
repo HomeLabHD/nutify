@@ -1,4 +1,4 @@
-
+# This script was created following the ntfy documentation and with review of the following article: https://sleeplessbeastie.eu/2024/03/18/how-to-utilize-ntfy-notifications-from-gitlab-pipelines/ to fun
 ---
 spec:
   inputs:
