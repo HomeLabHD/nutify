@@ -14,9 +14,9 @@ spec:
       description: 'The *password* that will be used to authenticate to ntfy and send a web-push notification.'
     ntfy_url:
       default: 'https://ntfy.pcfae.com/ad_arbitorium-gitops'
-      description: 'The full ntfy URL including the topic that the web-push notification will be sent to. i.e. https://ntfy.sh/gitlab'
+      description: 'The ntfy URL (containing the topic) that the web-push notification will be sent to. i.e. https://ntfy.sh/gitlab'
     msg_action:
-      description: ''
+      description: 'Defines a scripted action that a user can take upon recieving the web-push notification.'
     msg_attach:
       description: 'The url of an image or other file to be attached to the ntfy web-push notification.'
     msg_body:
