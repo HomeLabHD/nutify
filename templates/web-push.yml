@@ -14,7 +14,7 @@ spec:
       default: 'https://ntfy.pcfae.com/ad_arbitorium-gitops'
       description: 'The ntfy URL (containing the topic) that the web-push notification will be sent to. i.e. https://ntfy.sh/gitlab'
     msg_action:
-    default ''
+    default: ''
       description: 'Defines a scripted action that a user can take upon recieving the web-push notification.'
     msg_attach:
       default: ''
