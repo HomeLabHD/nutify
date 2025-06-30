@@ -7,18 +7,17 @@ spec:
     stage:
       default: ntfy
     ntfy_user:
-      default: ${CI_PROJECT_DIR}/ansible/inventory
-      description: 'Ansible Inventory File that will be used to identify hosts that the provided playbook should target.'
+      description: 'ntfy username that will be used to authenticate to a ntfy url via curl and send a web-push notification'
     ntfy_pass:
-      description: 'The filename of a valid Ansible Playbook that will be executed.'
+      description: 'ntfy password that will be used to authenticate to a ntfy url via curl and send a web-push notification.'
     msg_body:
-      default: 
-      description:
-    msg_tag:
-      description: 'An SSH private key stored as a CI/CD variable that will be used for SSH key based authentication.'
+      default: '${CI_PROJECT_NAME}: ${MSG_STATE} (ref ${CI_COMMIT_REF_NAME})'
+      description: 'The message that should be sent using this ntfy component.'
     msg_prio:
       default: ${CI_PROJECT_DIR}/ansible
-      description: 'Root directory containing Ansible config, inventory, and playbooks.'
+      description: 'The priority level of the notification that will be sent.'
+    msg_tag:
+      description: 'Tags/Emoji that the message should be marked with.'
 
 ---
 
@@ -28,10 +27,11 @@ spec:
     name: alpine:latest
     entrypoint: [""]
   variables:
-    PROJECT_DIR: "$[[ inputs.root_dir ]]"
-    PROJECT_FILE: "$[[ inputs.project_file ]]"
-    INVENTORY_FILE: "$[[ inputs.inventory_file ]]"
-    SSH_KEY: "$[[ inputs.remote_ssh ]]"
+    NTFY_USER: "$[[ inputs.ntfy_user ]]"
+    NTFY_PASS: "$[[ inputs.ntfy_pass ]]"
+    MSG_BODY: "$[[ inputs.inventory_file ]]"
+    MSG_PRIO: "$[[ inputs.remote_ssh ]]"
+    MSG_TAG: "$[[ inputs.remote_ssh ]]"
   before_script: |
     echo "---------------------------------------------------------------------------"
     echo "ntfy GitOps Component 🔔 - preparing environment - Building an alpine image to send a web-push notification via ntfy ..."
