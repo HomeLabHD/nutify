@@ -35,7 +35,7 @@ spec:
       default: 'bell'
       description: ' Comma seperated list of Tags/Emoji that the message should be marked with. (i.e. tags:scream_cat,smiley_cat)'
     msg_title: 
-      default: Gitlab ntfy Component
+      default: 'Gitlab ntfy Component'
       description: 'The Title that the ntfy web-push message will be sent with.'
     # msg_email:
 
