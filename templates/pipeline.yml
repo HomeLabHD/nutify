@@ -1,0 +1,55 @@
+
+---
+spec:
+  inputs:
+    as:
+      default: run-ansible
+    stage:
+      default: ansible
+    inventory_file:
+      default: ${CI_PROJECT_DIR}/ansible/inventory
+      description: 'Ansible Inventory File that will be used to identify hosts that the provided playbook should target.'
+    project_file:
+      description: 'The filename of a valid Ansible Playbook that will be executed.'
+    remote_ssh:
+      description: 'An SSH private key stored as a CI/CD variable that will be used for SSH key based authentication.'
+    root_dir:
+      default: ${CI_PROJECT_DIR}/ansible
+      description: 'Root directory containing Ansible config, inventory, and playbooks.'
+
+
+.send_notification_commands: 
+  script:
+    - >
+      message="${CI_PROJECT_NAME}: ${MSG_STATE} (ref ${CI_COMMIT_REF_NAME})";
+      curl -u "${NOTIFY_USER}:${NOTIFY_PASSWORD}" \
+           -H "${MSG_TAG}"                        \
+           -H "${MSG_PRIO}"                       \
+           -d "${message}"                        \
+           "${NOTIFY_ADDRESS}/gitlab";
+
+send_notification_success:
+  stage: notify
+  when: on_success
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/curlimages/curl:8.6.0
+  variables:
+    MSG_STATE: "success"
+    MSG_TAG: "tags:smiley_cat"
+    MSG_PRIO: "prio:low"
+  script:
+    - !reference [.send_notification_commands, script]
+  tags:
+    - docker
+
+send_notification_failure:
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/curlimages/curl:8.6.0
+  stage: notify
+  when: on_failure
+  variables:
+    PIPELINE_STATE: "fail"
+    MSG_TAG: "tags:scream_cat"
+    MSG_PRIO: "prio:high"    
+  script:
+    - !reference [.send_notification_commands, script]
+  tags:
+    - docker
