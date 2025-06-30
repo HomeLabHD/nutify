@@ -1,0 +1,91 @@
+
+---
+spec:
+  inputs:
+    as:
+      default: ntfy-web-push
+    stage:
+      default: ntfy
+    ntfy_user:
+      default: ${CI_PROJECT_DIR}/ansible/inventory
+      description: 'Ansible Inventory File that will be used to identify hosts that the provided playbook should target.'
+    ntfy_pass:
+      description: 'The filename of a valid Ansible Playbook that will be executed.'
+    msg_body:
+      default: 
+      description:
+    msg_tag:
+      description: 'An SSH private key stored as a CI/CD variable that will be used for SSH key based authentication.'
+    msg_prio:
+      default: ${CI_PROJECT_DIR}/ansible
+      description: 'Root directory containing Ansible config, inventory, and playbooks.'
+
+---
+
+'$[[ inputs.as ]]':
+  stage: '$[[ inputs.stage ]]'
+  image:
+    name: alpine:latest
+    entrypoint: [""]
+  variables:
+    PROJECT_DIR: "$[[ inputs.root_dir ]]"
+    PROJECT_FILE: "$[[ inputs.project_file ]]"
+    INVENTORY_FILE: "$[[ inputs.inventory_file ]]"
+    SSH_KEY: "$[[ inputs.remote_ssh ]]"
+  before_script: |
+    echo "---------------------------------------------------------------------------"
+    echo "ntfy GitOps Component 🔔 - preparing environment - Building an alpine image to send a web-push notification via ntfy ..."
+    echo "---------------------------------------------------------------------------"
+    echo "Installing dependencies [curl]..."
+    apk add --no-cache curl >/dev/null
+  script: |
+    echo "---------------------------------------------------------------------------"
+    echo "ntfy GitOps Component 🔔 - web-push - Now sending a web-push notification via ntfy..."
+    
+    message="${CI_PROJECT_NAME}: ${MSG_STATE} (ref ${CI_COMMIT_REF_NAME})"
+    curl -u "${NOTIFY_USER}:${NOTIFY_PASSWORD}" -H "${MSG_TAG}" -H "${MSG_PRIO}" -d "${message}" "${NOTIFY_ADDRESS}/gitlab"
+    
+    echo "---------------------------------------------------------------------------"
+    echo # ntfy GitOps Component 🔔 - web-push - Sent web-push notification via ntfy... ✅"
+    echo "---------------------------------------------------------------------------"
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+      #changes:
+        #- '$[[ inputs.root_dir ]]/$[[ inputs.project_file ]]'
+
+
+.send_notification_commands: 
+  script:
+    - >
+      message="${CI_PROJECT_NAME}: ${MSG_STATE} (ref ${CI_COMMIT_REF_NAME})";
+      curl -u "${NOTIFY_USER}:${NOTIFY_PASSWORD}" \
+           -H "${MSG_TAG}"                        \
+           -H "${MSG_PRIO}"                       \
+           -d "${message}"                        \
+           "${NOTIFY_ADDRESS}/gitlab";
+
+send_notification_success:
+  stage: notify
+  when: on_success
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/curlimages/curl:8.6.0
+  variables:
+    MSG_STATE: "success"
+    MSG_TAG: "tags:smiley_cat"
+    MSG_PRIO: "prio:low"
+  script:
+    - !reference [.send_notification_commands, script]
+  tags:
+    - docker
+
+send_notification_failure:
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/curlimages/curl:8.6.0
+  stage: notify
+  when: on_failure
+  variables:
+    PIPELINE_STATE: "fail"
+    MSG_TAG: "tags:scream_cat"
+    MSG_PRIO: "prio:high"    
+  script:
+    - !reference [.send_notification_commands, script]
+  tags:
+    - docker
