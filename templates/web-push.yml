@@ -13,7 +13,7 @@ spec:
     ntfy_token:
       description: 'The *access token* that will be used to authenticate to ntfy and send a web-push notification'
     ntfy_url:
-      default: 'https://ntfy.pcfae.com/Ad_Arbitorium-Gitops'
+      default: 'https://ntfy.pcfae.com/Ad_Arbitorium-GitOps'
       description: 'The ntfy URL (containing the topic) that the web-push notification will be sent to. i.e. https://ntfy.sh/gitlab'
     msg_action:
       default: ''
