@@ -99,6 +99,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
        msmtp \
        openssl \
        ca-certificates \
+       openssh-client \
        libsnmp40 \
        libneon27 \
        libgd3 \
