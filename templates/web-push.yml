@@ -64,9 +64,9 @@ spec:
     MSG_TITLE: "$[[ inputs.msg_title ]]"
   before_script: |
     echo "---------------------------------------------------------------------------"
-    echo "ntfy GitOps Component 🔔 - preparing environment - Building an alpine image to send a web-push notification via ntfy ..."
+    echo "AntParade 🐜 - ntfy component 🔔 - Build $CI_JOB_IMAGE to push notifications via ntfy"
     echo "---------------------------------------------------------------------------"
-    echo "Installing dependencies [curl]..."
+    echo "Install dependencies (curl)..."
     apk add --no-cache curl >/dev/null
   script: |
     echo "---------------------------------------------------------------------------"
@@ -84,7 +84,7 @@ spec:
       "${NTFY_URL}"
       # -H "Email: "$MSG_EMAIL"
     echo "---------------------------------------------------------------------------"
-    echo # ntfy GitOps Component 🔔 - web-push - Sent web-push notification via ntfy... ✅"
+    echo " ntfy GitOps Component 🔔 - web-push - Sent web-push notification via ntfy. ✅"
     echo "---------------------------------------------------------------------------"
   rules:
     - if: '$CI_COMMIT_REF_NAME == "main"'
