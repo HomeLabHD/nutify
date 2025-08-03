@@ -19,3 +19,4 @@ include:
 stages:
   - test
   - build
+  - release
