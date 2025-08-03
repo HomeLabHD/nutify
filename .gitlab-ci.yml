@@ -1,15 +1,23 @@
+
+cache:
+  key: "${CI_COMMIT_REF_SLUG}-${CI_PIPELINE_ID}"
+  paths:
+    - .cache/
+
+include:
+  - component: $CI_SERVER_FQDN/components/stagefreight/gl-component-release@main
+    inputs:
+      gitlab_domain: "https://gitlab.prplanit.com"
+      component_spec_files:
+        - "templates/web-push.yml"
+      readme_file: "README.md"
+      badge_template: "assets/badge-release-generic.svg"
+      badge_output: "assets/badge-release-status.svg"
+      branch_name: "main"
+  - project: 'components/stagefreight'
+    file: '/export-dependencies.yml'
+    ref: main
+
 stages:
+  - build
   - release
-
-
-# If the pipeline is for a new tag with a semantic version, and all previous jobs succeed,
-# create the release.
-create-release:
-  stage: release
-  image: registry.gitlab.com/gitlab-org/release-cli:latest
-  script: echo "Creating release $CI_COMMIT_TAG"
-  rules:
-    - if: $CI_COMMIT_TAG
-  release:
-    tag_name: $CI_COMMIT_TAG
-    description: "Release $CI_COMMIT_TAG of components repository $CI_PROJECT_PATH"
