@@ -12,6 +12,7 @@ include:
       gitlab_domain: "https://gitlab.prplanit.com"
       gitlab_token: "${GITLAB_TOKEN}"
       badge-release-status_output: "assets/badge-release_status.svg"
+      freight_docker_tally: "1"
       freight_docker_url_1: "docker.io"
       freight_docker_user_1: "${DOCKER_HUB_USERNAME}"
       freight_docker_pass_1: "${DOCKER_HUB_PASSWORD}"
