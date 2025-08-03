@@ -17,5 +17,4 @@ include:
     ref: main
         
 stages:
-  - build
-  - release
+  - test
