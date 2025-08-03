@@ -1,0 +1,21 @@
+cache:
+  key: "${CI_COMMIT_REF_SLUG}-${CI_PIPELINE_ID}"
+  paths:
+    - .cache/
+
+include:
+  - component: $CI_SERVER_FQDN/components/stagefreight/gl-docker-release@main
+    inputs:
+      docker_hub_user: "${DOCKER_HUB_USERNAME}"
+      docker_hub_pass: "${DOCKER_HUB_PASSWORD}"
+      docker_image: "prplanit/stagefreight"
+      gitlab_domain: "https://gitlab.prplanit.com"
+      gitlab_token: "${GITLAB_TOKEN}"
+      badge-release-status_output: "assets/badge-release_status.svg"
+  - project: 'components/stagefreight'
+    file: '/export-dependencies.yml'
+    ref: main
+        
+stages:
+  - build
+  - release
