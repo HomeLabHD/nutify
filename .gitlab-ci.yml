@@ -6,7 +6,7 @@ cache:
 include:
   - component: $CI_SERVER_FQDN/components/stagefreight/gl-docker-release@dev
     inputs:
-      docker_image: "prplanit/stagefreight"
+      docker_image: "prplanit/nutify-ssh"
       gitlab_domain: "https://gitlab.prplanit.com"
       gitlab_token: "${GITLAB_TOKEN}"
       badge-release-status_output: "assets/badge-release_status.svg"
